@@ -38,12 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'debug_toolbar',
     'rest_framework',
     'corsheaders',
 
-
+    'core.apps.CoreConfig',   
 ]
 
 MIDDLEWARE = [
@@ -59,13 +60,21 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+SITE_ID = 2
+
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 ROOT_URLCONF = 'houseparty.urls'
 
