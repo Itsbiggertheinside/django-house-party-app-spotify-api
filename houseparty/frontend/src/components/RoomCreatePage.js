@@ -6,12 +6,86 @@ import { Button, Grid, Typography, TextField, FormHelperText, FormControl, Radio
 
 export default class RoomCreatePage extends Component {
 
+    componentDidMount() {
+
+        const requestOption = {
+            method: 'POSt',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: 'testuser',
+                password: 'trtbelgesel'
+            })
+        }
+
+        fetch('http://127.0.0.1:8000/api/rest-auth/login/', requestOption)
+            .then(response => response.json())
+            .then(data => {
+              const token = data.key
+              sessionStorage.setItem('token', token)
+            })
+            .catch(err => console.log(err))
+    }
+
     render() {
 
-        const data = {
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+
+        let data = {
             code: '',
             guest_can_pause: false,
-            votes_to_skip: 1,
+            votes_to_skip: 2,
+        }
+
+        function handleCode(e) {
+            data.code = e.target.value
+        }
+
+        function handleGuestCanPause(e) {
+            data.guest_can_pause = e.target.value
+        }
+
+        function handleVotesToSkip(e) {
+            data.votes_to_skip = e.target.value
+        }
+
+        function handleCreateRoomButton() {
+            const requestOption = {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Authorization': `Token ${sessionStorage.getItem('token')}`,
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: data.code,
+                    guest_can_pause: data.guest_can_pause,
+                    votes_to_skip: data.votes_to_skip
+                })
+            }
+
+            fetch('http://127.0.0.1:8000/api/', requestOption)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
         }
 
         return (            
@@ -20,13 +94,13 @@ export default class RoomCreatePage extends Component {
                     <Grid item xs={12} align='center'><Typography component='h4' variant='h4'>Create a Room</Typography></Grid>
                     <Grid item xs={12} align='center'>
                         <FormControl>
-                            <TextField required={true} type='text' defaultValue={data.code} onChange={e => data.code = e.target.value} inputProps={{min: 1, style: { textAlign: 'center' }}} />
+                            <TextField required={true} type='text' onChange={handleCode} inputProps={{min: 1, style: { textAlign: 'center' }}} />
                             <FormHelperText><div align='center'>Enter a Room Code</div></FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} align='center'>
                         <FormControl component='fieldset'>
-                            <RadioGroup row defaultValue={data.guest_can_pause} onChange={e => data.guest_can_pause = e.target.value}>
+                            <RadioGroup row defaultValue='false' onChange={handleGuestCanPause}>
                                 <FormControlLabel value='true' control={<Radio color='primary' />} label='Play / Pause' labelPlacement='bottom' />
                                 <FormControlLabel value='false' control={<Radio color='secondary' />} label='No Control' labelPlacement='bottom' />
                             </RadioGroup>
@@ -35,12 +109,12 @@ export default class RoomCreatePage extends Component {
                     </Grid>
                     <Grid item xs={12} align='center'>
                         <FormControl>
-                            <TextField required={true} type='number' defaultValue={data.votes_to_skip} onChange={e => data.votes_to_skip = e.target.value} inputProps={{min: 1, style: { textAlign: 'center' }}} />
+                            <TextField required={true} type='number' defaultValue={2} onChange={handleVotesToSkip} inputProps={{min: 1, style: { textAlign: 'center' }}} />
                             <FormHelperText><div align='center'>Votes Required to Skip Song</div></FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} align='center'>
-                        <Button onClick={console.log(data)} color='primary' variant='contained'>Create a Room</Button>
+                        <Button onClick={handleCreateRoomButton} color='primary' variant='contained'>Create a Room</Button>
                     </Grid>
                     <Grid item xs={12} align='center'>
                         <Button color='secondary' variant='contained' to='/' component={Link}>Back to Room List</Button>
