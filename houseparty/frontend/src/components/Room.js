@@ -20,7 +20,7 @@ export default function Room() {
 
 
     return (
-        <div>
+        <div className='jac'>
             <p>Kod: {roomData.code}</p>
             <p>Parça durdurulabilir mi? {roomData.guest_can_pause?'True':'False'}</p>
             <p>Şarkıyı geçmek için kalan oy: {roomData.votes_to_skip}</p>

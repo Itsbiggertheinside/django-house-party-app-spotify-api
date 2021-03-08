@@ -65,7 +65,7 @@ export default function RoomCreatePage() {
     }
 
     return (     
-            <div>
+            <div className='jac'>
                 <Grid container spacing={1}>
                     <Grid item xs={12} align='center'><Typography component='h4' variant='h4'>Create a Room</Typography></Grid>
                     <Grid item xs={12} align='center'>
