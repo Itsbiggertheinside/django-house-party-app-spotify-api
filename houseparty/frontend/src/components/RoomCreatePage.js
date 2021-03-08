@@ -1,94 +1,70 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Grid, Typography, TextField, FormHelperText, FormControl, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
 
 
 
-export default class RoomCreatePage extends Component {
+export default function RoomCreatePage() {
 
-    componentDidMount() {
+    let history = useHistory();
 
+    let data = {
+        code: '',
+        guest_can_pause: false,
+        votes_to_skip: 2,
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function handleCode(e) {
+        data.code = e.target.value
+    }
+
+    function handleGuestCanPause(e) {
+        data.guest_can_pause = e.target.value
+    }
+
+    function handleVotesToSkip(e) {
+        data.votes_to_skip = e.target.value
+    }
+
+    function handleCreateRoomButton() {
         const requestOption = {
-            method: 'POSt',
+            method: 'POST',
             headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Authorization': `Token ${sessionStorage.getItem('token')}`,
                 'Accept': 'application/json, text/plain',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: 'testuser',
-                password: 'trtbelgesel'
+                code: data.code,
+                guest_can_pause: data.guest_can_pause,
+                votes_to_skip: data.votes_to_skip
             })
         }
 
-        fetch('http://127.0.0.1:8000/api/rest-auth/login/', requestOption)
-            .then(response => response.json())
-            .then(data => {
-              const token = data.key
-              sessionStorage.setItem('token', token)
-            })
-            .catch(err => console.log(err))
+        fetch('http://127.0.0.1:8000/api/', requestOption)
+        .then(response => response.json())
+        .then(data => history.push('/room/' + data.code))
+        .catch(err => console.log(err))
     }
 
-    render() {
-
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        
-
-        let data = {
-            code: '',
-            guest_can_pause: false,
-            votes_to_skip: 2,
-        }
-
-        function handleCode(e) {
-            data.code = e.target.value
-        }
-
-        function handleGuestCanPause(e) {
-            data.guest_can_pause = e.target.value
-        }
-
-        function handleVotesToSkip(e) {
-            data.votes_to_skip = e.target.value
-        }
-
-        function handleCreateRoomButton() {
-            const requestOption = {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'Authorization': `Token ${sessionStorage.getItem('token')}`,
-                    'Accept': 'application/json, text/plain',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    code: data.code,
-                    guest_can_pause: data.guest_can_pause,
-                    votes_to_skip: data.votes_to_skip
-                })
-            }
-
-            fetch('http://127.0.0.1:8000/api/', requestOption)
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err))
-        }
-
-        return (            
+    return (     
             <div>
                 <Grid container spacing={1}>
                     <Grid item xs={12} align='center'><Typography component='h4' variant='h4'>Create a Room</Typography></Grid>
@@ -121,6 +97,31 @@ export default class RoomCreatePage extends Component {
                     </Grid>
                 </Grid>
             </div>
-        )
-    }
+    )
 }
+
+
+
+// Örnek login olma işlemi
+    // componentDidMount() {
+
+    //     const requestOption = {
+    //         method: 'POSt',
+    //         headers: {
+    //             'Accept': 'application/json, text/plain',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             username: 'testuser',
+    //             password: 'trtbelgesel'
+    //         })
+    //     }
+
+    //     fetch('http://127.0.0.1:8000/api/rest-auth/login/', requestOption)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //           const token = data.key
+    //           sessionStorage.setItem('token', token)
+    //         })
+    //         .catch(err => console.log(err))
+    // }
