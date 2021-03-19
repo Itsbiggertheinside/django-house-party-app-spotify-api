@@ -1,17 +1,10 @@
 from rest_framework import serializers
-from .models import Room, Profile
-
-
-class ProfileSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Profile
-        fields = '__all__'
+from .models import Room
 
 
 class RoomSerializer(serializers.ModelSerializer):
 
-    host = ProfileSerializer(read_only=True)
+    host = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
         model = Room

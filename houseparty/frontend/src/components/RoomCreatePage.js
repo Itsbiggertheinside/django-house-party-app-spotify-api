@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Grid, Typography, TextField, FormHelperText, FormControl, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
-
+import cherryRibbon from '../vectors/cherry-ribbon.png'
 
 
 export default function RoomCreatePage() {
@@ -67,7 +67,9 @@ export default function RoomCreatePage() {
     return (     
             <div className='jac'>
                 <Grid container spacing={1}>
-                    <Grid item xs={12} align='center'><Typography component='h4' variant='h4'>Create a Room</Typography></Grid>
+                    <Grid item xs={12} align='center'>
+                        <Typography component='h4' variant='h4'>Create a Room</Typography>
+                    </Grid>
                     <Grid item xs={12} align='center'>
                         <FormControl>
                             <TextField required={true} type='text' onChange={handleCode} inputProps={{min: 1, style: { textAlign: 'center' }}} />

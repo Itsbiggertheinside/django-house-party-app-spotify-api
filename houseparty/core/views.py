@@ -1,19 +1,17 @@
 from rest_framework import status, viewsets, mixins, permissions, pagination
 
-from .serializers import ProfileSerializer, RoomSerializer
+from .serializers import RoomSerializer
 from .permissions import ListCreateOrIsOwner
-from .models import Profile, Room
+from .models import Room
 
 
 class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.filter(is_locked=False).order_by('-created_at')
+    queryset = Room.objects.select_related('host').filter(is_locked=False).order_by('-created_at')
     serializer_class = RoomSerializer
     permission_classes = (ListCreateOrIsOwner, )
 
     def perform_create(self, serializer):
-        profile = self.request.user.profile
-        room = profile.room_set.first()
+        user = self.request.user
 
         if serializer.is_valid():
-            if not room:
-                serializer.save(host=profile)
+            serializer.save(host=user)
