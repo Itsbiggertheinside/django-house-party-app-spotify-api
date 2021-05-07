@@ -39,6 +39,10 @@ export default {
                 register_panel.className = 'auth-panel-back'
             }
         }
+    },
+    mounted() {
+        this.$cookies.remove('token')
+        this.$cookies.remove('username')
     }
 }
 </script>

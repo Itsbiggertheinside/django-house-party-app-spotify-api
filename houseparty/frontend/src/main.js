@@ -13,6 +13,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 
+import VueCookies from 'vue-cookies'
+
+Vue.use(VueCookies)
+Vue.$cookies.config('7d')
+
 Vue.config.productionTip = false
 
 new Vue({

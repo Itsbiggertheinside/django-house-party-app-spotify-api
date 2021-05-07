@@ -1,6 +1,6 @@
 <template>
     <div class="room-retrieve">
-        <b-row class="my-5" align-h="around">
+        <b-row class="mt-3 mb-5" align-h="around">
             <b-col md="5">
                 <b-row>
                     <b-col cols="12" class="mb-4" style="z-index: 1;">

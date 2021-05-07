@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'debug_toolbar',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
+    'rest_framework', 'rest_framework.authtoken',
+    'rest_auth', 'rest_auth.registration',
+    'allauth', 'allauth.account', 'allauth.socialaccount',
     'corsheaders',
 
     'core.apps.CoreConfig',   
@@ -52,15 +52,14 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 SITE_ID = 2
@@ -69,12 +68,15 @@ INTERNAL_IPS = [
     '127.0.0.1'
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = (
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+    'https://127.0.0.1:8080',
+    'https://localhost:8080'
+)
 
-CORS_ORIGIN_WHITELIST = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000',
-]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -82,6 +84,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication'
     ]
 }
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 ROOT_URLCONF = 'houseparty.urls'
 
@@ -158,3 +165,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/media/')
 
 
 ACCOUNT_EMAIL_REQUIRED = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'influencertrtest@gmail.com'
+EMAIL_HOST_PASSWORD = '6m50gdaho!'
