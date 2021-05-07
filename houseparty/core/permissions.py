@@ -7,5 +7,5 @@ class ListCreateOrIsOwner(IsAuthenticatedOrReadOnly):
         return super(ListCreateOrIsOwner, self).has_permission(request, view)
 
     def has_object_permission(self, request, view, obj):
-        return bool(request.method in SAFE_METHODS or request.user.is_staff or request.user 
-            and request.user == obj.host)
+        return bool(request.method in SAFE_METHODS or request.user.is_staff or request.user.profile 
+            and request.user.profile == obj.host)

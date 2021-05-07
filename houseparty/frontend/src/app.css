@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+
+:root {
+    --red: #E12729;
+    --darkblue: #102B4C;
+    --shadowblue: #346E93;
+    --lightblue: #96CDEF;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+background: #1c2f3b;
+}
+
+::-webkit-scrollbar-thumb {
+background: #18435e;
+border-radius: 2.5px;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+*:focus {
+    box-shadow: none !important;
+}
+
+html, #app {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    background-color: var(--darkblue);
+}
+
+body {
+    font-size: 1rem;
+}
+
+
+#room-list .card {
+    margin-bottom: 1.6rem;
+    filter: drop-shadow(.025rem .025rem .05rem #000000) opacity(.9);
+}
+
+#room-list div[class*="col"]:nth-child(odd) .card {
+    background-color: var(--red);
+}
+
+#room-list div[class*="col"]:nth-child(even) .card {
+    background-color: var(--shadowblue);
+}
+
+#room-list h4 {
+    font-weight: 500;
+    font-style: italic;
+}
+
+.panel-button {
+    border: 0 !important;
+    border-radius: 0 0 8px 8px !important;
+    background-color: var(--shadowblue) !important;
+}
+
+.panel-button:hover {
+    background-color: var(--lightblue) !important;
+}
+
+.modal-content {
+    color: white;
+    background-color: var(--darkblue) !important;
+}
+
+.modal-content input {
+    opacity: .7;
+    color: white !important;
+    font-size: 1.2rem;
+    font-weight: 600;
+    background-color: var(--red) !important;
+}
+
+.modal-close-button {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+.checkbox-button {
+    opacity: .8;
+    padding: .2rem !important;
+    border: none !important;
+    background-color: var(--red);
+}
+
+.create-modal-input {
+    width: 4rem !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+}
+
+.divider {
+    width: 100%;
+    border: 1px solid white;
+}
+
+#chat-panel {
+    height: 60vh;
+    overflow-y: scroll;
+}

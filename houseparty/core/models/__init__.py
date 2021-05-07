@@ -1,2 +1,2 @@
-# from .profile import Profile
-from .room import Room
+from .profile import *
+from .room import *

@@ -1,4 +1,5 @@
 from rest_framework import status, viewsets, mixins, permissions, pagination
+from rest_framework.response import Response
 
 from .serializers import RoomSerializer
 from .permissions import ListCreateOrIsOwner
@@ -10,8 +11,8 @@ class RoomViewSet(viewsets.ModelViewSet):
     serializer_class = RoomSerializer
     permission_classes = (ListCreateOrIsOwner, )
 
-    def perform_create(self, serializer):
-        user = self.request.user
-
-        if serializer.is_valid():
-            serializer.save(host=user)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data={'host': request.user.profile, **request.data})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
