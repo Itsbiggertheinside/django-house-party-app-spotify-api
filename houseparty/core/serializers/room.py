@@ -4,7 +4,7 @@ from core.models import Room
 
 class RoomSerializer(serializers.ModelSerializer):
 
-    host = serializers.SlugRelatedField(slug_field='user__username', read_only=True)
+    host_username = serializers.CharField(source='host.user.username', read_only=True)
 
     class Meta:
         model = Room

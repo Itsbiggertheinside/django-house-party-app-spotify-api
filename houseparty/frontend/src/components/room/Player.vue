@@ -5,9 +5,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <b-avatar></b-avatar>
-                        <p class="m-0">username</p>
+                        <p class="m-0">{{currentRoom.host_username}}</p>
                     </div>
-                    <h6 class="m-0">#ISKS6JDU2</h6>
+                    <h6 class="m-0">#{{currentRoom.code}}</h6>
                 </div>
             </template>
             <b-card-body class="p-1">
@@ -37,7 +37,7 @@
 
 <script>
 export default {
-
+    props: ['currentRoom']
 }
 </script>
 

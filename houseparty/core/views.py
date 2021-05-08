@@ -1,4 +1,5 @@
-from rest_framework import status, viewsets, mixins, permissions, pagination
+from rest_framework import status, viewsets
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from .serializers import RoomSerializer
@@ -7,12 +8,24 @@ from .models import Room
 
 
 class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.select_related('host').filter(is_locked=False).order_by('-created_at')
     serializer_class = RoomSerializer
     permission_classes = (ListCreateOrIsOwner, )
+    lookup_field = 'code'
+
+    def get_queryset(self):
+        queryset = Room.objects.select_related('host__user')
+
+        if self.action == 'list':
+            queryset.order_by('-created_at')
+
+        return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_object())
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data={'host': request.user.profile, **request.data})
+        serializer = self.get_serializer(data={'host': request.user.profile.pk, **request.data})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

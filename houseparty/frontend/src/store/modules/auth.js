@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { base_url } from '../config'
 
 export default {
 
@@ -20,7 +20,7 @@ export default {
     actions: {
         
         async login(state, credentials) {
-            const response = await axios.post('http://127.0.0.1:8000/rest-auth/login/', {
+            const response = await axios.post(base_url + '/rest-auth/login/', {
                 username: credentials.username,
                 password: credentials.password
             }, { 
@@ -34,7 +34,7 @@ export default {
         },
 
         async register(state, credentials) {
-            const response = await axios.post('http://127.0.0.1:8000/rest-auth/registration/', {
+            const response = await axios.post(base_url + '/rest-auth/registration/', {
                 username: credentials.username,
                 email: credentials.email,
                 password1: credentials.password1,

@@ -37,6 +37,6 @@ export default {
   name: 'Home',
   components: {
     RoomList, RoomFilter, Join, Create
-  }
+  },
 }
 </script>

@@ -8,11 +8,11 @@
             </template>
 
             <p class="mt-2 mb-3">Oluşturmak istediğiniz oda için eşsiz bir kod tanımlayın:</p>
-            <b-form-input class="mt-3 mb-4"></b-form-input>
+            <b-form-input v-model="code" class="mt-3 mb-4"></b-form-input>
 
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="m-0">Kullanıcılar şarkıyı durdurabilir mi?</h6>
-                <b-button @click="handleCheckboxSubmit('guest_can_pause', 'pause')" ref="guest_can_pause" class="checkbox-button" style="background-color: #E12729"><b-icon-x></b-icon-x></b-button>
+                <b-button @click="handleCheckboxSubmit('guest_can_pause', 'pause')" v-model="guest_can_pause" ref="guest_can_pause" class="checkbox-button" style="background-color: #E12729"><b-icon-x></b-icon-x></b-button>
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -25,11 +25,11 @@
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="m-0">Şarkıyı geçmek için şu kadar oya ihtiyaç var:</h6>
                 <b-button v-show="votes_to_skip_button" @click="handleShowVotesToSkip()" class="checkbox-button" style="background-color: #E12729"><b-icon-question></b-icon-question></b-button>
-                <b-form-input v-show="show_votes_to_skip" class="create-modal-input"></b-form-input>
+                <b-form-input v-model="votes_to_skip_count" v-show="show_votes_to_skip_count_input" class="create-modal-input"></b-form-input>
             </div>
 
             <template #modal-footer>
-                <b-button class="panel-button"><b-icon-check></b-icon-check></b-button>
+                <b-button @click="handleCreateRoom()" class="panel-button"><b-icon-check></b-icon-check></b-button>
             </template>
 
         </b-modal>
@@ -37,13 +37,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
+
 export default {
     methods: {
+        ...mapActions({createRoom: 'createRoom'}),
         hideRoomCreateModal() {
             this.$refs['room-create-modal'].hide()
         },
         handleShowVotesToSkip() {
-            this.show_votes_to_skip = !this.show_votes_to_skip
+            this.show_votes_to_skip_count_input = !this.show_votes_to_skip_count_input
             this.votes_to_skip_button = !this.votes_to_skip_button
         },
         handleCheckboxSubmit(ref, type) {
@@ -62,13 +66,34 @@ export default {
             } else if (type == 'lock' && this.is_locked == false) {
                 this.is_locked = true
             }
+        },
+        async handleCreateRoom() {
+            let settings = {
+                code: this.code,
+                is_locked: this.is_locked,
+                guest_can_pause: this.guest_can_pause,
+                votes_to_skip_count: this.votes_to_skip_count
+            }
+
+            await this.createRoom(settings)
+            .then(status => {
+                if (status == 201) {
+                    this.$router.push('/room/' + this.code)
+                } else {
+                    console.log('Bir sorun oluştu')
+                }
+            })
         }
     },
     data() {
         return {
             votes_to_skip_button: true,
-            show_votes_to_skip: false,
-            is_locked: false
+            show_votes_to_skip_count_input: false,
+
+            code: '',
+            is_locked: false,
+            guest_can_pause: false,
+            votes_to_skip_count: 0
         }
     }
 }

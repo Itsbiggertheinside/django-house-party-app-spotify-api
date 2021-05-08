@@ -10,11 +10,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import Navbar from "./components/partials/Navbar.vue"
 
 export default {
   components: {
     Navbar
+  },
+  methods: {
+    ...mapActions(['setRooms'])
+  },
+  mounted() {
+    this.setRooms()
   }
 }
 </script>

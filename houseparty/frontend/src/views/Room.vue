@@ -4,7 +4,7 @@
             <b-col md="5">
                 <b-row>
                     <b-col cols="12" class="mb-4" style="z-index: 1;">
-                        <player></player>
+                        <player :currentRoom="currentRoom"></player>
                     </b-col>
                     <b-col cols="12" class="mb-4" style="z-index: 1;">
                         <playlist></playlist>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import Chat from '../components/room/Chat.vue'
 import Player from '../components/room/Player.vue'
 import Playlist from '../components/room/Playlist.vue'
@@ -31,10 +32,19 @@ export default {
     components: {
         Player, Playlist, Chat 
     },
+    methods: {
+        ...mapActions({setRoomDetail: 'setRoomDetail'})
+    },
+    computed: {
+        ...mapGetters({currentRoom: 'getCurrentRoom'})
+    },
     data() {
         return {
             code: this.$route.params.code
         }
+    },
+    async mounted() {
+        await this.setRoomDetail(this.code)
     }
 }
 </script>
