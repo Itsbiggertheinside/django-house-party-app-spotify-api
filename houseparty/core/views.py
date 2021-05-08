@@ -21,8 +21,8 @@ class RoomViewSet(viewsets.ModelViewSet):
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.get_object())
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        basic_information_serializer = self.get_serializer(self.get_object())
+        return Response({'basic': basic_information_serializer.data}, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data={'host': request.user.profile.pk, **request.data})

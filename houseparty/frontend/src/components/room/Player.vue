@@ -5,15 +5,15 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <b-avatar></b-avatar>
-                        <p class="m-0">{{currentRoom.host_username}}</p>
+                        <p class="m-0">{{basicInfo.host_username}}</p>
                     </div>
-                    <h6 class="m-0">#{{currentRoom.code}}</h6>
+                    <h6 class="m-0">#{{basicInfo.code}}</h6>
                 </div>
             </template>
             <b-card-body class="p-1">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <b-icon-pause-fill font-scale="2"></b-icon-pause-fill>
+                        <b-icon-music-note-beamed class="p-1" font-scale="2"></b-icon-music-note-beamed>
                         <p class="m-0">Weekend - Save Your Tears</p>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
 
 <script>
 export default {
-    props: ['currentRoom']
+    props: ['basicInfo']
 }
 </script>
 

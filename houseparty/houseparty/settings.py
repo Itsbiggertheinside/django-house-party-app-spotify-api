@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'rest_auth', 'rest_auth.registration',
     'allauth', 'allauth.account', 'allauth.socialaccount',
     'corsheaders',
+    'channels', 'channels_redis',
 
-    'core.apps.CoreConfig',   
+    'core.apps.CoreConfig',
+    'websocket.apps.WebsocketConfig',
 ]
 
 MIDDLEWARE = [
@@ -67,16 +69,6 @@ SITE_ID = 2
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
-
-CORS_ALLOWED_ORIGINS = (
-    'http://127.0.0.1:8080',
-    'http://localhost:8080',
-    'https://127.0.0.1:8080',
-    'https://localhost:8080'
-)
-
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -164,11 +156,38 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/media/')
 
 
-ACCOUNT_EMAIL_REQUIRED = True
+# EMAIL SMTP
 
+ACCOUNT_EMAIL_REQUIRED = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'influencertrtest@gmail.com'
 EMAIL_HOST_PASSWORD = '6m50gdaho!'
+
+
+# CHANNELS REDIS
+
+ASGI_APPLICATION = 'houseparty.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+
+# DJANGO CORS HEADERS
+
+CORS_ALLOWED_ORIGINS = (
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+    'https://127.0.0.1:8080',
+    'https://localhost:8080'
+)
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True

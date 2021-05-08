@@ -4,7 +4,7 @@
             <b-col md="5">
                 <b-row>
                     <b-col cols="12" class="mb-4" style="z-index: 1;">
-                        <player :currentRoom="currentRoom"></player>
+                        <player :basicInfo="currentRoom.basic"></player>
                     </b-col>
                     <b-col cols="12" class="mb-4" style="z-index: 1;">
                         <playlist></playlist>
