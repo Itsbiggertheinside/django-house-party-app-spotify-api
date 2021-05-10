@@ -30,5 +30,6 @@ urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
 
     path('', include('core.urls')),
+    path('websocket/', include('websocket.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,7 +5,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <b-avatar></b-avatar>
-                        <h6 class="m-0">anothermayk</h6>
+                        <h6 class="m-0">{{current_user}}</h6>
                     </div>
                     <b-avatar-group size="2rem" v-b-tooltip.hover.bottom title="15 aktif dinleyen">
                         <b-avatar src="https://placekitten.com/300/300" variant="info"></b-avatar>
@@ -17,92 +17,53 @@
                     </b-avatar-group>
                 </div>
             </template>
-            <b-card-body id="chat-panel">
-                <div class="w-100">
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <p class="m-0">Test mesaj</p>
-                        <b-avatar></b-avatar>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <p class="m-0">Test mesaj</p>
-                        <b-avatar></b-avatar>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <p class="m-0">Test mesaj</p>
-                        <b-avatar></b-avatar>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <p class="m-0">Test mesaj</p>
-                        <b-avatar></b-avatar>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <p class="m-0">Test mesaj</p>
-                        <b-avatar></b-avatar>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <p class="m-0">Test mesaj</p>
-                        <b-avatar></b-avatar>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <b-avatar></b-avatar>
-                        <p class="m-0">Test mesaj</p>
-                    </div>
+            <b-card-body class="w-100" id="chat-panel">
+                <div v-for="message in messages" :key="message.id" class="d-flex align-items-center">
+                    <b-avatar></b-avatar>
+                    <p class="m-0">{{message.sender}}: {{message.text}}</p>
                 </div>
             </b-card-body>
             <template #footer>
-                <b-form-input class="chat-message-input"></b-form-input>
+                <b-form-input v-model="message_data.text" @keyup.enter="handleSendMessage(message_data)" class="chat-message-input"></b-form-input>
             </template>
         </b-card>
     </div>
 </template>
 
 <script>
-export default {
+import { mapActions, mapGetters } from 'vuex'
 
+export default {
+    methods: {
+        ...mapActions({sendMessage: 'sendMessage'}),
+        handleSendMessage(data) {
+            if (data.text != '') {
+                this.sendMessage(data)
+                this.message_data.text = ''
+            }
+        },
+        handleScroll() {
+            const chat_panel = document.querySelector('#chat-panel')
+            chat_panel.scrollTop = chat_panel.scrollHeight
+        }
+    },
+    computed: {
+        ...mapGetters({messages: 'getMessages'})
+    },
+    data() {
+        return {
+            current_user: this.$cookies.get('username'),
+            message_data: {
+                code: this.$route.params.code,
+                text: ''
+            }
+        }
+    },
+    watch: {
+        messages: function () {
+            this.handleScroll()
+        }
+    }
 }
 </script>
 

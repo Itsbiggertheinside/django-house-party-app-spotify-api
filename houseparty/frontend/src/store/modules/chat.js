@@ -1,28 +1,49 @@
-// import axios from 'axios'
-import { websocket_url } from '../config'
+import axios from 'axios'
+import Vue from 'vue'
+import { base_url } from '../config'
 
 
 export default {
 
     state: {
 
-        socket: ''
+        sended_message: {},
+        messages: []
 
     },
 
     mutations: {
 
-        setSocket(state, payload) {
-            state.socket = payload
+        setSendedMessage(state, payload) {
+            state.sended_message = payload
+        },
+
+        setMessages(state, payload) {
+            state.messages.push(payload)
         }
 
     },
 
     actions: {
-        
-        createWebSocketConnection(state, code) {
 
-            const socket = new WebSocket(websocket_url)
+        async sendMessage(state, data) {
+
+            let random_id = Math.floor(Math.random() * 712637128)
+            
+            const response = await axios.post(base_url + '/websocket/real-time/', {
+                action: 'chat',
+                code: data.code,
+                id: random_id,
+                text: data.text
+            }, {
+                headers: {
+                    'Accept': 'application/json, */*',
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Authorization': 'Token ' + Vue.$cookies.get('token')
+                }
+            })
+
+            state.commit('setSendedMessage', response.data)
 
         }
 
@@ -30,7 +51,7 @@ export default {
 
     getters: {
         
-        getSocket: state => state.socket
+        getMessages: state => state.messages
 
     }
 

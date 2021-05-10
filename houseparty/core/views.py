@@ -13,16 +13,12 @@ class RoomViewSet(viewsets.ModelViewSet):
     lookup_field = 'code'
 
     def get_queryset(self):
-        queryset = Room.objects.select_related('host__user')
+        queryset = Room.objects.select_related('host__user', 'player').prefetch_related('player__skip_votes__user')
 
         if self.action == 'list':
             queryset.order_by('-created_at')
 
         return queryset
-
-    def retrieve(self, request, *args, **kwargs):
-        basic_information_serializer = self.get_serializer(self.get_object())
-        return Response({'basic': basic_information_serializer.data}, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data={'host': request.user.profile.pk, **request.data})

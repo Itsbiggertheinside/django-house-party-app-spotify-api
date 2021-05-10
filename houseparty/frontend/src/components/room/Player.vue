@@ -5,9 +5,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <b-avatar></b-avatar>
-                        <p class="m-0">{{basicInfo.host_username}}</p>
+                        <p class="m-0">{{player_data.host_username}}</p>
                     </div>
-                    <h6 class="m-0">#{{basicInfo.code}}</h6>
+                    <h6 class="m-0">#{{player_data.code}}</h6>
                 </div>
             </template>
             <b-card-body class="p-1">
@@ -21,8 +21,8 @@
             <template #footer>
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <b-button v-b-tooltip.hover.bottom="'Şarkıyı geçmek için oyla'" class="modal-close-button p-1"><b-icon-skip-end-fill font-scale="1.8"></b-icon-skip-end-fill></b-button>
-                        <span>0 oy verildi</span>
+                        <b-button @click="handleSkipVote()" v-b-tooltip.hover.bottom="'Şarkıyı geçmek için oyla'" class="modal-close-button p-1"><b-icon-skip-end-fill font-scale="1.8"></b-icon-skip-end-fill></b-button>
+                        <span>{{getSkipVotes.length}} oy verildi</span>
                     </div>
                     <div>
                         <b-button v-b-tooltip.hover.bottom="'Sesi kapat'" class="modal-close-button p-2"><b-icon-reception4 font-scale="1.2"></b-icon-reception4></b-button>
@@ -36,8 +36,27 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
-    props: ['basicInfo']
+    props: ['player_data'],
+    methods: {
+        ...mapActions({increaseSkipVote: 'increaseSkipVote'}),
+        async handleSkipVote() {
+            await this.increaseSkipVote(this.player_data.code)
+        }
+    },
+    computed: {
+        ...mapGetters({getSkipVotes: 'getSkipVotes'})
+    },
+    data() {
+        return {
+            votes_count: 0
+        }
+    },
+    mounted() {
+        
+    }
 }
 </script>
 

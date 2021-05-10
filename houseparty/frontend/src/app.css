@@ -112,4 +112,5 @@ body {
 #chat-panel {
     height: 60vh;
     overflow-y: scroll;
+    padding: 2rem .5rem;
 }

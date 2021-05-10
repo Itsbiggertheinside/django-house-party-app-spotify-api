@@ -32,11 +32,18 @@ import RoomList from '../components/home/RoomList.vue'
 import RoomFilter from '../components/home/RoomFilter.vue'
 import Join from '../components/modals/room/Join.vue'
 import Create from '../components/modals/room/Create.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Home',
   components: {
     RoomList, RoomFilter, Join, Create
   },
+  methods: {
+    ...mapActions({closeSocket: 'closeSocket'})
+  },
+  mounted() {
+    this.closeSocket()
+  }
 }
 </script>
