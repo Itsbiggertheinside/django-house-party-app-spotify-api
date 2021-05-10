@@ -57,6 +57,7 @@ export default {
 
             state.commit('setCurrentRoom', response.data)
             state.commit('setSkipVote', response.data.player.skip_votes)
+            state.commit('setRoomListeners', response.data.listener.active_users)
 
         },
         

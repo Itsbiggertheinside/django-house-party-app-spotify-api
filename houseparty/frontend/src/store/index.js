@@ -7,6 +7,7 @@ import profile from './modules/profile'
 import utils from './modules/utils'
 import chat from './modules/chat'
 import player from './modules/player'
+import listener from './modules/listener'
 import websocket from './modules/websocket'
 
 Vue.use(Vuex)
@@ -16,7 +17,7 @@ export default new Vuex.Store({
   strict: true,
 
   modules: {
-    auth, room, profile, utils, chat, player, websocket
+    auth, room, profile, utils, chat, player, websocket, listener
   }
 
 })

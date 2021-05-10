@@ -13,7 +13,7 @@ class RoomViewSet(viewsets.ModelViewSet):
     lookup_field = 'code'
 
     def get_queryset(self):
-        queryset = Room.objects.select_related('host__user', 'player').prefetch_related('player__skip_votes__user')
+        queryset = Room.objects.select_related('host__user', 'player', 'listener').prefetch_related('player__skip_votes__user', 'listener__active_users__user')
 
         if self.action == 'list':
             queryset.order_by('-created_at')

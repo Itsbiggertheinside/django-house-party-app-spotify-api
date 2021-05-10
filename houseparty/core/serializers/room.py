@@ -1,13 +1,14 @@
 from django.db import models
 from rest_framework import serializers
 from core.models import Room
-from websocket.serializers import PlayerSerializer
+from websocket.serializers import PlayerSerializer, ListenerSerializer
 
 
 class RoomSerializer(serializers.ModelSerializer):
 
     host_username = serializers.CharField(source='host.user.username', read_only=True)
     player = PlayerSerializer(read_only=True)
+    listener = ListenerSerializer(read_only=True)
 
     class Meta:
         model = Room

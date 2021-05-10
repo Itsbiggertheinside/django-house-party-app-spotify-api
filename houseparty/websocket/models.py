@@ -9,3 +9,11 @@ class Player(models.Model):
 
     def __str__(self):
         return 'Room Player'
+
+
+class Listener(models.Model):
+    room = models.OneToOneField('core.Room', on_delete=models.CASCADE)
+    active_users = models.ManyToManyField('core.Profile')
+
+    def __str__(self):
+        return 'Room Listeners'

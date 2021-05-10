@@ -51,6 +51,18 @@ export default {
                     }
 
                 }
+
+                else if (websocket_data.action == 'listening') {
+                    
+                    console.log('listening data:', websocket_data)
+                    
+                    if (websocket_data.action_type == 'add') {
+                        state.commit('increaseRoomListeners', websocket_data)
+                    } else if (websocket_data.action_type == 'remove') {
+                        state.commit('decreaseRoomListeners', websocket_data)
+                    }
+
+                }
                 
                 // -----------------------------------------------
         

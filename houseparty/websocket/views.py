@@ -32,6 +32,15 @@ class WebSocketHandler(views.APIView):
                 'action': str(action)
             }
 
+        elif action == 'listening':
+            data = {
+                'type': 'set_listener',
+                'user_id': str(request.user.pk),
+                'username': str(request.user.username),
+                'action': str(action),
+                'action_type': str(request.data['action_type'])
+            }
+
 
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(f'room-{code}', data)

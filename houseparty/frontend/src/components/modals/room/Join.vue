@@ -8,10 +8,10 @@
             </template>
 
             <p class="mt-2 mb-3">Katılmak istediğin odanın eşsiz numarasını gir:</p>
-            <b-form-input class="my-3"></b-form-input>
+            <b-form-input v-model="room_name" class="my-3"></b-form-input>
 
             <template #modal-footer>
-                <b-button class="panel-button"><b-icon-check></b-icon-check></b-button>
+                <b-button @click="handleEnterRoom(room_name)" class="panel-button"><b-icon-check></b-icon-check></b-button>
             </template>
 
         </b-modal>
@@ -21,6 +21,9 @@
 <script>
 export default {
     methods: {
+        handleEnterRoom(room_name) {
+            this.$router.push('/room/' + room_name)
+        },
         hideRoomJoinModal() {
             this.$refs['room-join-modal'].hide()
         }

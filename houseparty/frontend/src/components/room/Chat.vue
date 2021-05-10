@@ -63,6 +63,9 @@ export default {
         messages: function () {
             this.handleScroll()
         }
+    },
+    mounted() {
+        this.handleScroll()
     }
 }
 </script>
