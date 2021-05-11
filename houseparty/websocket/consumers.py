@@ -106,7 +106,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'user_id': user_id,
             'username': username,
-            'action': action
+            'action': action,
+            'action_type': action_type
         }))
 
 
@@ -127,13 +128,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room = Room.objects.select_related('host__user', 'player', 'listener').prefetch_related('player__skip_votes__user', 'listener__active_users__user').get(code=code)
 
             if action == 'increase':
-                if not user_id in room.listener.active_users.all():
+                if not int(user_id) in room.listener.active_users.values_list('user_id', flat=True):
                     room.listener.active_users.add(user_id)
                     room.save()
+                    print('user ' + user_id + ' added')
+
             elif action == 'decrease':
-                if user_id in room.listener.active_users.all():
+                if int(user_id) in room.listener.active_users.values_list('user_id', flat=True):
                     room.listener.active_users.remove(user_id)
                     room.save()
+                    print('user ' + user_id + ' removed')
 
         except Exception as e:
             print(e)

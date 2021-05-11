@@ -46,15 +46,18 @@ body {
 
 #room-list .card {
     margin-bottom: 1.6rem;
-    filter: drop-shadow(.025rem .025rem .05rem #000000) opacity(.9);
 }
 
 #room-list div[class*="col"]:nth-child(odd) .card {
+    opacity: .9;
     background-color: var(--red);
+    filter: drop-shadow(.2rem .2rem .5rem #c41818e8);
 }
 
 #room-list div[class*="col"]:nth-child(even) .card {
+    opacity: .9;
     background-color: var(--shadowblue);
+    filter: drop-shadow(.2rem .2rem .5rem #18538ae8);
 }
 
 #room-list h4 {

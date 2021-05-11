@@ -27,6 +27,11 @@ export default {
         hideRoomJoinModal() {
             this.$refs['room-join-modal'].hide()
         }
+    },
+    data() {
+        return {
+            room_name: ''
+        }
     }
 }
 </script>

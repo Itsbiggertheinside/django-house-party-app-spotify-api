@@ -22,13 +22,8 @@
                         </div>
                     </b-card-body>
                     <b-card-footer class="d-flex justify-content-between align-items-center">
-                        <b-avatar-group size="2rem" v-b-tooltip.hover.bottom title="15 aktif dinleyen">
-                            <b-avatar src="https://placekitten.com/300/300" variant="info"></b-avatar>
-                            <b-avatar src="https://placekitten.com/320/320" variant="dark"></b-avatar>
-                            <b-avatar src="https://placekitten.com/300/300" variant="info"></b-avatar>
-                            <b-avatar src="https://placekitten.com/320/320" variant="dark"></b-avatar>
-                            <b-avatar src="https://placekitten.com/300/300" variant="info"></b-avatar>
-                            <b-avatar src="https://placekitten.com/320/320" variant="dark"></b-avatar>
+                        <b-avatar-group size="2rem" v-b-tooltip.hover.bottom :title="room.listener.active_users.length + ' aktif dinleyen'">
+                            <b-avatar v-for="listener in room.listener.active_users" :key="listener.user_id" src="https://placekitten.com/300/300" variant="info"></b-avatar>
                         </b-avatar-group>
                         <b-button @click="enterRoom(room.code)" v-b-popover.hover.right title="Odaya Katıl" class="modal-close-button m-0 p-0"><b-icon-play-fill></b-icon-play-fill></b-button>
                     </b-card-footer>

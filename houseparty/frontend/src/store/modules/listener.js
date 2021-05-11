@@ -33,7 +33,7 @@ export default {
         async setListener(state, {code, action_type}) {
 
             const response = await axios.post(base_url + '/websocket/real-time/', {
-                action: 'vote',
+                action: 'listening',
                 code: code,
                 action_type: action_type
             }, { 

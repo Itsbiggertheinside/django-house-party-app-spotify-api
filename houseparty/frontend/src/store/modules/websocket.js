@@ -57,9 +57,15 @@ export default {
                     console.log('listening data:', websocket_data)
                     
                     if (websocket_data.action_type == 'add') {
-                        state.commit('increaseRoomListeners', websocket_data)
+                        
+                        if(!state.getters.getListeners.some(data => data.user_id == websocket_data.user_id)) {
+                            state.commit('increaseRoomListeners', websocket_data)
+                        }
+
                     } else if (websocket_data.action_type == 'remove') {
+
                         state.commit('decreaseRoomListeners', websocket_data)
+
                     }
 
                 }

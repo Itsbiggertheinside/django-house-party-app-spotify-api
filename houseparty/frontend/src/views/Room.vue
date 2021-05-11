@@ -12,7 +12,7 @@
                 </b-row>
             </b-col>
             <b-col md="7" style="z-index: 1;">
-                <chat></chat>
+                <chat :listeners="getListeners"></chat>
             </b-col>
             <b-img fluid 
                 style="opacity: .9; position: absolute; width: 30rem; height: auto; left: 0; z-index: 0;" 
@@ -33,10 +33,10 @@ export default {
         Player, Playlist, Chat 
     },
     methods: {
-        ...mapActions({setRoomDetail: 'setRoomDetail', connection: 'createWebSocketConnection', closeSocket: 'closeSocket'})
+        ...mapActions({setRoomDetail: 'setRoomDetail', connection: 'createWebSocketConnection', setListener: 'setListener'})
     },
     computed: {
-        ...mapGetters({currentRoom: 'getCurrentRoom'})
+        ...mapGetters({currentRoom: 'getCurrentRoom', getListeners: 'getListeners'})
     },
     data() {
         return {
@@ -47,6 +47,7 @@ export default {
         await this.setRoomDetail(this.code)
         .then(async () => {
             await this.connection(this.code)
+            await this.setListener({code: this.code, action_type: 'add'})
         })
     }
 }

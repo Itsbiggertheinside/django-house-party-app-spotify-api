@@ -7,13 +7,8 @@
                         <b-avatar></b-avatar>
                         <h6 class="m-0">{{current_user}}</h6>
                     </div>
-                    <b-avatar-group size="2rem" v-b-tooltip.hover.bottom title="15 aktif dinleyen">
-                        <b-avatar src="https://placekitten.com/300/300" variant="info"></b-avatar>
-                        <b-avatar src="https://placekitten.com/320/320" variant="dark"></b-avatar>
-                        <b-avatar src="https://placekitten.com/300/300" variant="info"></b-avatar>
-                        <b-avatar src="https://placekitten.com/320/320" variant="dark"></b-avatar>
-                        <b-avatar src="https://placekitten.com/300/300" variant="info"></b-avatar>
-                        <b-avatar src="https://placekitten.com/320/320" variant="dark"></b-avatar>
+                    <b-avatar-group size="2rem" v-b-tooltip.hover.bottom :title="listener_count + ' aktif dinleyen'">
+                        <b-avatar v-for="listener in listeners" :key="listener.user_id" src="https://placekitten.com/300/300" variant="info"></b-avatar>
                     </b-avatar-group>
                 </div>
             </template>
@@ -34,6 +29,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+    props: ['listeners'],
     methods: {
         ...mapActions({sendMessage: 'sendMessage'}),
         handleSendMessage(data) {
@@ -56,7 +52,8 @@ export default {
             message_data: {
                 code: this.$route.params.code,
                 text: ''
-            }
+            },
+            listener_count: this.listeners.length
         }
     },
     watch: {
