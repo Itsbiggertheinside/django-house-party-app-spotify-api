@@ -1,11 +1,13 @@
 from rest_framework import views, status
 from rest_framework.response import Response
-from requests import Request, post
+from requests import Request
 
 from datetime import datetime, timedelta
 
 from .credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 from .serializers import SpotifyTokenSerializer
+from .utils import get_spotify_access_token, refresh_spotify_token
+
 
 
 # Create your views here.
@@ -27,14 +29,7 @@ class SpotifyCallback(views.APIView):
 
     def get(self, request, *args, **kwargs):
         code = request.query_params.get('code')
-
-        callback_response = post('https://accounts.spotify.com/api/token', data={
-            'grant_type': 'authorization_code',
-            'code': code,
-            'redirect_uri': REDIRECT_URI,
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET
-        }).json()
+        callback_response = get_spotify_access_token(code)
 
         key_expire_time = datetime.isoformat(datetime.now() + timedelta(seconds=callback_response.get('expires_in')))
 
@@ -49,3 +44,25 @@ class SpotifyCallback(views.APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class SpotifyRefreshToken(views.APIView):
+
+    def get(self, request, *args, **kwargs):
+        try:
+            spotify_connection = request.user.profile.spotifytoken
+
+            response = refresh_spotify_token(spotify_connection.refresh_token)
+
+            key_expire_time = datetime.isoformat(datetime.now() + timedelta(seconds=response.get('expires_in')))
+
+            spotify_connection.access_token = response.get('access_token')
+            spotify_connection.token_type = response.get('token_type')
+            spotify_connection.expires_in = key_expire_time
+            spotify_connection.save()
+
+            return Response(status=status.HTTP_202_ACCEPTED)
+
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)

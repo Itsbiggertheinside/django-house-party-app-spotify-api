@@ -8,7 +8,7 @@
             </template>
 
             <p class="mt-2 mb-3">Oluşturmak istediğiniz oda için eşsiz bir kod tanımlayın:</p>
-            <b-form-input v-model="code" class="mt-3 mb-4"></b-form-input>
+            <b-form-input v-model="code" class="mt-3 mb-4" autocomplete="off"></b-form-input>
 
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="m-0">Kullanıcılar şarkıyı durdurabilir mi?</h6>

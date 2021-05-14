@@ -11,7 +11,7 @@
             <b-button v-if="is_authenticated" class="panel-button ml-3" v-b-modal.room-join-modal v-b-tooltip.hover.bottom title="Odaya Katıl">
                 <b-icon-door-open-fill></b-icon-door-open-fill>
             </b-button>
-            <b-button v-if="is_authenticated" class="panel-button ml-3" v-b-modal.room-create-modal v-b-tooltip.hover.bottom title="Oda Oluştur">
+            <b-button v-if="is_authenticated" @click="handleRoomCreateModal()" class="panel-button ml-3" v-b-tooltip.hover.bottom title="Oda Oluştur">
                 <b-icon-geo-fill></b-icon-geo-fill>
             </b-button>
             <b-button v-if="is_authenticated" @click="handleRoute('/profile')" class="panel-button ml-3" v-b-tooltip.hover.bottom title="Profilim">
@@ -25,8 +25,11 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
     methods: {
+        ...mapActions({checkSpotifyConnectivity: 'checkSpotifyConnectivity', refreshSpotifyToken: 'refreshSpotifyToken'}),
         handleRoute(link) {
             if (link == '/login') {
                 this.$cookies.remove('token')
@@ -35,7 +38,26 @@ export default {
             } else {
                 this.$router.push(link)
             }
+        },
+        async handleRoomCreateModal() {
+            await this.checkSpotifyConnectivity()
+            .then(async () => {
+                console.log('is authenticated:', this.getSpotifyIsAuthenticated)
+                console.log('key is available:', this.getSpotifyKeyIsAvailable)
+                if (this.getSpotifyIsAuthenticated && this.getSpotifyKeyIsAvailable) {
+                    this.$bvModal.show('room-create-modal')
+                } else if (this.getSpotifyIsAuthenticated && !this.getSpotifyKeyIsAvailable) {
+                    await this.refreshSpotifyToken()
+                    .then(status => {
+                        console.log('refresh spotify token status:', status)
+                        this.$bvModal.show('room-create-modal')
+                    }).catch(err => console.log(err))
+                }
+            }).catch(err => console.log(err))
         }
+    },
+    computed: {
+        ...mapGetters(['getSpotifyIsAuthenticated', 'getSpotifyKeyIsAvailable'])
     },
     data() {
         return {

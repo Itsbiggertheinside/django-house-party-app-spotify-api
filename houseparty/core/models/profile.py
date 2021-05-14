@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=95, null=True, blank=True)
+    picture = models.FileField(upload_to='profile_pictures', null=True, blank=True)
 
     def __str__(self):
         return 'profil'
