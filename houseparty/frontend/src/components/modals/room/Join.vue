@@ -22,6 +22,7 @@
 export default {
     methods: {
         handleEnterRoom(room_name) {
+            this.hideRoomJoinModal()
             this.$router.push('/room/' + room_name)
         },
         hideRoomJoinModal() {

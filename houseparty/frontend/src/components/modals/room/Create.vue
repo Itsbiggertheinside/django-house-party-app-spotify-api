@@ -78,6 +78,7 @@ export default {
             await this.createRoom(settings)
             .then(status => {
                 if (status == 201) {
+                    this.hideRoomCreateModal()
                     this.$router.push('/room/' + this.code)
                 } else {
                     console.log('Bir sorun oluştu')

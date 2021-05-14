@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
     'websocket.apps.WebsocketConfig',
+    'spotify.apps.SpotifyConfig',
 ]
 
 MIDDLEWARE = [

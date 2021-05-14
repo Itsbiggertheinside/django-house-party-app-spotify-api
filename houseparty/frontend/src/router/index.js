@@ -21,6 +21,12 @@ const routes = [
     name: 'Room',
 
     component: () => import(/* webpackChunkName: "room" */ '../views/Room.vue')
+  },
+  {
+    path: '/spotify/callback',
+    name: 'SpotifyCallback',
+
+    component: () => import(/* webpackChunkName: "spotifyCallback" */ '../views/SpotifyCallback.vue')
   }
 ]
 

@@ -31,7 +31,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     props: ['listeners'],
     methods: {
-        ...mapActions({sendMessage: 'sendMessage'}),
+        ...mapActions({sendMessage: 'sendMessage', clearRoomMessages: 'clearRoomMessages'}),
         handleSendMessage(data) {
             if (data.text != '') {
                 this.sendMessage(data)
@@ -62,6 +62,7 @@ export default {
         }
     },
     mounted() {
+        this.clearRoomMessages()
         this.handleScroll()
     }
 }

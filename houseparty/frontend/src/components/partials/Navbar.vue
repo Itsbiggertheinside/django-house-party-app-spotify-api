@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="nav">
         <!-- <b-img style="width: 80px; height: auto;" :src="require('../../assets/images/house-party-logo.png')" /> -->
         <div>
             <b-button v-if="!is_authenticated" @click="handleRoute('/login')" class="panel-button ml-3" v-b-tooltip.hover.bottom title="Giriş Yap">

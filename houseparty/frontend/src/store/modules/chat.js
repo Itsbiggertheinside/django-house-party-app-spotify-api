@@ -18,6 +18,10 @@ export default {
             state.sended_message = payload
         },
 
+        clearMessages(state, payload) {
+            state.messages = payload
+        },
+
         setMessages(state, payload) {
             state.messages.push(payload)
         }
@@ -25,6 +29,10 @@ export default {
     },
 
     actions: {
+
+        clearRoomMessages(state) {
+            state.commit('clearMessages', [])
+        },
 
         async sendMessage(state, data) {
 

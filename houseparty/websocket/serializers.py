@@ -14,7 +14,7 @@ class ProfileInstance(serializers.BaseSerializer):
 
 class PlayerSerializer(serializers.ModelSerializer):
 
-    skip_votes = ProfileInstance(Profile.objects.select_related('user'), many=True)
+    skip_votes = ProfileInstance(Profile.objects.select_related('user', 'spotifytoken'), many=True)
 
     class Meta:
         model = Player
@@ -23,7 +23,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 class ListenerSerializer(serializers.ModelSerializer):
 
-    active_users = ProfileInstance(Profile.objects.select_related('user'), many=True)
+    active_users = ProfileInstance(Profile.objects.select_related('user', 'spotifytoken'), many=True)
 
     class Meta:
         model = Listener
