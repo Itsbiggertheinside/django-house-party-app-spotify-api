@@ -78,7 +78,7 @@ export default {
 
         async checkSpotifyConnectivity(state) {
 
-            const response = await axios.get(base_url + '/api/control-center/', {
+            const response = await axios.get(base_url + '/spotify/control-center/', {
                 headers: {
                     'Accept': 'application/json, */*',
                     'Content-Type': 'application/json; charset=utf-8',

@@ -28,6 +28,7 @@
                         <b-button v-b-tooltip.hover.bottom="'Sesi kapat'" class="modal-close-button p-2"><b-icon-reception4 font-scale="1.2"></b-icon-reception4></b-button>
                         <b-button v-b-tooltip.hover.bottom="'Linki paylaş'" class="modal-close-button p-2"><b-icon-share-fill font-scale="1.2"></b-icon-share-fill></b-button>
                         <b-button v-b-tooltip.hover.bottom="'Detayları görüntüle'" class="modal-close-button p-2"><b-icon-info-circle-fill font-scale="1.2"></b-icon-info-circle-fill></b-button>
+                        <b-button v-b-tooltip.hover.bottom="'Ayarlar'" v-b-modal.room-settings-modal class="modal-close-button p-2"><b-icon-gear-fill font-scale="1.2"></b-icon-gear-fill></b-button>
                     </div>
                 </div>
             </template>

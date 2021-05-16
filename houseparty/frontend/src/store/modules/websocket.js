@@ -26,7 +26,7 @@ export default {
         
         createWebSocketConnection(state, code) {
         
-            const socket = new WebSocket(websocket_url + '/ws/chat/' + code + '/')
+            const socket = new WebSocket(websocket_url + '/ws/room/' + code + '/')
             state.commit('setWebSocket', socket)
         
             socket.onmessage = ({data}) => {
@@ -67,6 +67,12 @@ export default {
                         state.commit('decreaseRoomListeners', websocket_data)
 
                     }
+
+                }
+
+                else if (websocket_data.action == 'playlist') {
+
+                    state.dispatch('playerManager', { code: websocket_data.code, type: 'tracks', playlist: websocket_data.playlist })
 
                 }
                 

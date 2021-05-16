@@ -18,7 +18,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ('current_song', 'skip_votes')
+        fields = ('current_song', 'current_playlist', 'skip_votes')
 
 
 class ListenerSerializer(serializers.ModelSerializer):

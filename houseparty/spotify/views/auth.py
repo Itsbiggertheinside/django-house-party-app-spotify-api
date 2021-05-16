@@ -2,11 +2,12 @@ from rest_framework import views, status
 from rest_framework.response import Response
 from requests import Request
 
+from django.utils import timezone
 from datetime import datetime, timedelta
 
-from .credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
-from .serializers import SpotifyTokenSerializer
-from .utils import get_spotify_access_token, refresh_spotify_token
+from spotify.credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
+from spotify.serializers import SpotifyTokenSerializer
+from spotify.utils import get_spotify_access_token, refresh_spotify_token
 
 
 
@@ -54,7 +55,7 @@ class SpotifyRefreshToken(views.APIView):
 
             response = refresh_spotify_token(spotify_connection.refresh_token)
 
-            key_expire_time = datetime.isoformat(datetime.now() + timedelta(seconds=response.get('expires_in')))
+            key_expire_time = datetime.isoformat(datetime.utcnow() + timedelta(seconds=response.get('expires_in')))
 
             spotify_connection.access_token = response.get('access_token')
             spotify_connection.token_type = response.get('token_type')
@@ -66,3 +67,37 @@ class SpotifyRefreshToken(views.APIView):
         except Exception as e:
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class ControlCenterAPIView(views.APIView):
+
+    def get(self, request, *args, **kwargs):
+        profile = request.user.profile
+        spotify_connection = None
+        spotify_access_token = None
+        spotify_refresh_token = None 
+        spotify_key_expire = None
+
+        try:
+            spotify_connection = profile.spotifytoken
+            spotify_access_token = spotify_connection.access_token
+            spotify_refresh_token = spotify_connection.refresh_token
+            spotify_key_expire = spotify_connection.expires_in
+        except Exception as e:
+            print(e)
+
+        spotify_is_authenticated = False
+        key_is_available = False
+
+        if spotify_access_token and spotify_refresh_token is not None:
+            spotify_is_authenticated = True
+
+        if spotify_key_expire is not None and datetime.isoformat(spotify_key_expire) > datetime.isoformat(datetime.utcnow()):
+            key_is_available = True
+        
+        context = {
+            'spotify_is_authenticated': spotify_is_authenticated,
+            'key_is_available': key_is_available
+        }
+
+        return Response(context, status=status.HTTP_200_OK)

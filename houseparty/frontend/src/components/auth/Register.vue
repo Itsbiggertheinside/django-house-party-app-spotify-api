@@ -30,34 +30,22 @@ export default {
         ...mapActions({
             register: 'register', setCurrentUser: 'setCurrentUser',
             setSpotifyAuthenticationUrl: 'setSpotifyAuthenticationUrl',
-            catchSpotifyCallbackData: 'catchSpotifyCallbackData'
         }),
-        async handleSpotifyConnectionPopup() {
-            const spotify_popup = window.open(this.getSpotifyAuthenticationUrl, 'Connect to Spotify', 'width=400, height=500')
-            window.spotifyCallback = async (code) => {
-                spotify_popup.close()
-                await this.catchSpotifyCallbackData(code)
-                .then(() => {
-                    if (this.getSpotifyIsConnected) {
-                        window.location.href = '/home'
-                    }
-                })
-                .catch(err => console.log(err))
-            }
-        },
         async handleRegister(credentials) {
             await this.register(credentials)
             .then(async () => {
                 await this.setCurrentUser()
-                await this.setSpotifyAuthenticationUrl()
                 .then(async () => {
-                    await this.handleSpotifyConnectionPopup()
-                }).catch(err => console.log(err))
+                    await this.setSpotifyAuthenticationUrl()
+                    .then(() => {
+                        window.location.replace(this.getSpotifyAuthenticationUrl)
+                    }).catch(err => console.log(err))
+                })
             }).catch(err => console.log(err))
         }
     },
     computed: {
-        ...mapGetters({getToken: 'getToken', getSpotifyAuthenticationUrl: 'getSpotifyAuthenticationUrl', getSpotifyIsConnected: 'getSpotifyIsConnected'})
+        ...mapGetters({getToken: 'getToken', getSpotifyAuthenticationUrl: 'getSpotifyAuthenticationUrl'})
     },
     data() {
         return {
