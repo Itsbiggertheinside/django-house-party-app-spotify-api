@@ -47,7 +47,7 @@ export default {
                 headers: {
                     'Accept': 'application/json, */*',
                     'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': 'Token ' + Vue.$cookies.get('token')
+                    'Authorization': 'Token ' + Vue.$cookies.get('houseparty_token')
                 }
             })
 
@@ -60,7 +60,7 @@ export default {
                 headers: {
                     'Accept': 'application/json, */*',
                     'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': 'Token ' + Vue.$cookies.get('token')
+                    'Authorization': 'Token ' + Vue.$cookies.get('houseparty_token')
                 }
             })
 
@@ -76,28 +76,13 @@ export default {
 
         },
 
-        async checkSpotifyConnectivity(state) {
-
-            const response = await axios.get(base_url + '/spotify/control-center/', {
-                headers: {
-                    'Accept': 'application/json, */*',
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': 'Token ' + Vue.$cookies.get('token')
-                }
-            })
-
-            state.commit('setSpotifyIsAuthenticated', response.data.spotify_is_authenticated)
-            state.commit('setSpotifyKeyIsAvailable', response.data.key_is_available)
-
-        },
-
         async refreshSpotifyToken(state) {
 
             const response = await axios.get(base_url + '/spotify/refresh-token/', {
                 headers: {
                     'Accept': 'application/json, */*',
                     'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': 'Token ' + Vue.$cookies.get('token')
+                    'Authorization': 'Token ' + Vue.$cookies.get('houseparty_token')
                 }
             })
 

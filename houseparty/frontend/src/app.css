@@ -140,10 +140,12 @@ body {
     height: 100%;
     z-index: 3;
     background-color: rgb(255, 255, 255);
-    opacity: .3;
+    opacity: .1;
 }
 
 .room-loader {
+    width: 50%;
+    height: auto;
     position: absolute;
     left: 50%;
     top: 50%;

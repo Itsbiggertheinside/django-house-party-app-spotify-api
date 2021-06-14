@@ -48,6 +48,21 @@ class WebSocketHandler(views.APIView):
                 'action': str(action)
             }
 
+        elif action == 'currently_playing':
+            data = {
+                'type': 'set_current_song',
+                'song': str(request.data['song']),
+                'action': str(action)
+            }
+
+        elif action == 'play_song':
+            data = {
+                'type': 'play_song',
+                'playlist': str(request.data['playlist']),
+                'song': str(request.data['song']),
+                'action': str(action)
+            }
+
 
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(f'room-{code}', data)

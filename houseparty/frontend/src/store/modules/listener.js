@@ -40,7 +40,7 @@ export default {
                 headers: {
                 'Accept': 'application/json, */*',
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Token ' + Vue.$cookies.get('token')
+                'Authorization': 'Token ' + Vue.$cookies.get('houseparty_token')
                 } 
             })
 

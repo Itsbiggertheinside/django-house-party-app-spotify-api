@@ -14,7 +14,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <b-icon-music-note-beamed class="p-1" font-scale="2"></b-icon-music-note-beamed>
-                        <p class="m-0">Weekend - Save Your Tears</p>
+                        <p class="m-0">{{getCurrentSong.track_name}}</p>
                     </div>
                 </div>
             </b-card-body>
@@ -28,7 +28,7 @@
                         <b-button v-b-tooltip.hover.bottom="'Sesi kapat'" class="modal-close-button p-2"><b-icon-reception4 font-scale="1.2"></b-icon-reception4></b-button>
                         <b-button v-b-tooltip.hover.bottom="'Linki paylaş'" class="modal-close-button p-2"><b-icon-share-fill font-scale="1.2"></b-icon-share-fill></b-button>
                         <b-button v-b-tooltip.hover.bottom="'Detayları görüntüle'" class="modal-close-button p-2"><b-icon-info-circle-fill font-scale="1.2"></b-icon-info-circle-fill></b-button>
-                        <b-button v-b-tooltip.hover.bottom="'Ayarlar'" v-b-modal.room-settings-modal class="modal-close-button p-2"><b-icon-gear-fill font-scale="1.2"></b-icon-gear-fill></b-button>
+                        <b-button @click="handleClickSettings()" v-if="player_data.host_username == $cookies.get('username')" v-b-tooltip.hover.bottom="'Ayarlar'" class="modal-close-button p-2"><b-icon-gear-fill font-scale="1.2"></b-icon-gear-fill></b-button>
                     </div>
                 </div>
             </template>
@@ -42,13 +42,17 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     props: ['player_data'],
     methods: {
-        ...mapActions({increaseSkipVote: 'increaseSkipVote'}),
+        ...mapActions({playerManager: 'playerManager', increaseSkipVote: 'increaseSkipVote', refreshSpotifyToken: 'refreshSpotifyToken'}),
+        async handleClickSettings() {
+            this.$bvModal.show('room-settings-modal')
+            await this.playerManager({code: this.$route.params.code, type: 'playlists'})
+        },
         async handleSkipVote() {
             await this.increaseSkipVote(this.player_data.code)
         }
     },
     computed: {
-        ...mapGetters({getSkipVotes: 'getSkipVotes'})
+        ...mapGetters({getSkipVotes: 'getSkipVotes', getCurrentSong: 'getCurrentSong'})
     },
     data() {
         return {

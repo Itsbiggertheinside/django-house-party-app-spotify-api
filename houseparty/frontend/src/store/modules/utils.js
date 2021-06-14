@@ -20,7 +20,7 @@ export default {
                 }
             })
 
-            Vue.$cookies.set('token', token)
+            Vue.$cookies.set('houseparty_token', token)
             Vue.$cookies.set('username', response.data.username)
 
             return response.status

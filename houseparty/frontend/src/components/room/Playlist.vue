@@ -1,7 +1,8 @@
 <template>
     <div>
         <b-list-group id="playlist-group">
-            <b-list-group-item v-for="tracks in getTracks" :key="tracks.track.id" class="d-flex justify-content-between align-items-center">
+            <b-list-group-item v-for="(tracks, index) in getTracks" :key="tracks.track.id" class="d-flex justify-content-between align-items-center"
+                    @click="playSong({code: $route.params.code, playlist: getCurrentPlaylist, song: index})" >
                 <div class="d-flex justify-content-start align-items-center">
                     <b-avatar class="align-center" square :src="tracks.track.album.images[0].url"></b-avatar>
                     <div class="mx-3">
@@ -16,12 +17,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 
 export default {
 
     methods: {
+        ...mapActions({setCurrentSong: 'setCurrentSong', playSong: 'playSong'}),
         convertDurationToMinutes(milliseconds) {
             let minutes = Math.floor(milliseconds / 60000)
             let seconds = ((milliseconds % 60000) / 1000).toFixed(0)
@@ -30,7 +32,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters({getTracks: 'getTracks'})
+        ...mapGetters({getTracks: 'getTracks', getCurrentPlaylist: 'getCurrentPlaylist'})
     }
 
 }

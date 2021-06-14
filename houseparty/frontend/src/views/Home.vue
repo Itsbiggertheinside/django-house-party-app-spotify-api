@@ -33,6 +33,7 @@ export default {
         await this.setListener({code: current_room_code, action_type: 'remove'})
         .then(async () => {
           await this.closeSocket()
+          this.$store.commit('increaseComponentKey', 1)
         })
       }
     } catch (e) {

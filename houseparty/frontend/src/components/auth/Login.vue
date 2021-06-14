@@ -28,7 +28,7 @@ export default {
                 await this.setCurrentUser()
                 .then(status => {
                     if (status == 200) {
-                        window.location.href = '/home'
+                        this.$router.push('/home')
                     } else {
                         this.error = 'Bir hata oluştu!'
                     }

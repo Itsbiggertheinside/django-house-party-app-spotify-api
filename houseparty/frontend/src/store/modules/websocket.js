@@ -75,7 +75,13 @@ export default {
                     state.dispatch('playerManager', { code: websocket_data.code, type: 'tracks', playlist: websocket_data.playlist })
 
                 }
-                
+
+                else if (websocket_data.action == 'play_song') {
+
+                    state.dispatch('playerManager', { code: websocket_data.code, type: 'play_song', playlist: websocket_data.playlist, song_offset: websocket_data.song })
+                    
+                }
+
                 // -----------------------------------------------
         
             }

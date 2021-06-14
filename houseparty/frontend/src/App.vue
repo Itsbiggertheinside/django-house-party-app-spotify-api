@@ -3,9 +3,9 @@
     <b-img id="particule-bg" :src="require('./assets/images/particule-bg.jpg')" />
     <b-container>
       <b-col cols="12" class="d-flex justify-content-end align-items-center mb-4" id="nav">
-        <navbar></navbar>
+        <navbar :key="componentKey"></navbar>
       </b-col>
-      <router-view/>
+      <router-view :key="componentKey"/>
     </b-container>
 
 
@@ -18,7 +18,7 @@
 <script>
 import { 
   mapActions, 
-  // mapGetters 
+  mapGetters 
 } from 'vuex'
 import Navbar from "./components/partials/Navbar.vue"
 import Join from './components/modals/room/Join.vue'
@@ -31,13 +31,17 @@ export default {
     // System
   },
   methods: {
-    ...mapActions(['setRooms'])
+    ...mapActions(['setRooms', 'setRoomsForAnonymousUsers'])
   },
   computed: {
-    // ...mapGetters({systemInformation: 'getSystemInformation'})
+    ...mapGetters({componentKey: 'getComponentKey'})
   },
   mounted() {
-    this.setRooms()
+    if (!this.$cookies.get('houseparty_token')) {
+      this.setRoomsForAnonymousUsers()
+    } else {
+      this.setRooms()
+    }
   }
 }
 </script>

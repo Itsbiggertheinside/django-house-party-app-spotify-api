@@ -37,7 +37,20 @@ export default {
                 headers: {
                     'Accept': 'application/json, */*',
                     'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': 'Token ' + Vue.$cookies.get('token')
+                    'Authorization': 'Token ' + Vue.$cookies.get('houseparty_token')
+                }
+            })
+
+            state.commit('setRooms', response.data)
+
+        },
+
+        async setRoomsForAnonymousUsers(state) {
+
+            const response = await axios.get(base_url + '/api/rooms/', {
+                headers: {
+                    'Accept': 'application/json, */*',
+                    'Content-Type': 'application/json; charset=utf-8'
                 }
             })
 
@@ -51,7 +64,7 @@ export default {
                 headers: {
                     'Accept': 'application/json, */*',
                     'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': 'Token ' + Vue.$cookies.get('token')
+                    'Authorization': 'Token ' + Vue.$cookies.get('houseparty_token')
                 }
             })
 
@@ -59,6 +72,7 @@ export default {
             state.commit('setSkipVote', response.data.player.skip_votes)
             state.commit('setRoomListeners', response.data.listener.active_users)
             state.commit('setCurrentPlaylist', response.data.player.current_playlist)
+            state.commit('setCurrentSong', response.data.player.current_song)
 
         },
         
@@ -72,7 +86,7 @@ export default {
             }, { headers: {
                 'Accept': 'application/json, */*',
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Token ' + Vue.$cookies.get('token')
+                'Authorization': 'Token ' + Vue.$cookies.get('houseparty_token')
             } })
 
             state.commit('updateActiveRooms', response.data)

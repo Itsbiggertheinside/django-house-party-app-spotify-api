@@ -51,11 +51,16 @@ export default {
         }
     },
     async mounted() {
+        this.setListener({code: this.code, action_type: 'add'})
         await this.setRoomDetail(this.code)
         .then(async () => {
             await this.connection(this.code)
-            await this.setListener({code: this.code, action_type: 'add'})
-            await this.playerManager({code: this.code, type: 'tracks', playlist: this.getCurrentPlaylist})
+            await this.playerManager({code: this.code, type: 'playlists'})
+            .then(() => {
+                if (this.getCurrentPlaylist != null) {
+                    this.playerManager({code: this.code, type: 'tracks', playlist: this.getCurrentPlaylist})
+                }
+            })
             .then(() => this.show_loader = false)
         })
     }

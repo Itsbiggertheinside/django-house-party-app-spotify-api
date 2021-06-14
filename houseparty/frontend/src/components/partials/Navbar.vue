@@ -25,43 +25,32 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
     methods: {
-        ...mapActions({checkSpotifyConnectivity: 'checkSpotifyConnectivity', refreshSpotifyToken: 'refreshSpotifyToken'}),
+        ...mapActions({refreshSpotifyToken: 'refreshSpotifyToken'}),
         handleRoute(link) {
-            if (link == '/login') {
-                this.$cookies.remove('token')
-                this.$cookies.remove('username')
-                window.location.href = '/login'
-            } else {
-                this.$router.push(link)
-            }
+            this.$router.push(link)
         },
         async handleRoomCreateModal() {
-            await this.checkSpotifyConnectivity()
+            await this.refreshSpotifyToken()
             .then(async () => {
-                console.log('is authenticated:', this.getSpotifyIsAuthenticated)
-                console.log('key is available:', this.getSpotifyKeyIsAvailable)
-                if (this.getSpotifyIsAuthenticated && this.getSpotifyKeyIsAvailable) {
                     this.$bvModal.show('room-create-modal')
-                } else if (this.getSpotifyIsAuthenticated && !this.getSpotifyKeyIsAvailable) {
                     await this.refreshSpotifyToken()
                     .then(status => {
                         console.log('refresh spotify token status:', status)
                         this.$bvModal.show('room-create-modal')
                     }).catch(err => console.log(err))
-                }
             }).catch(err => console.log(err))
         }
     },
     computed: {
-        ...mapGetters(['getSpotifyIsAuthenticated', 'getSpotifyKeyIsAvailable'])
+        
     },
     data() {
         return {
-            is_authenticated: this.$cookies.isKey('token')
+            is_authenticated: this.$cookies.isKey('houseparty_token')
         }
     }
 }

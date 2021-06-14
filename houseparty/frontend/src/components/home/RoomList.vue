@@ -16,7 +16,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <b-icon-pause-fill font-scale="2"></b-icon-pause-fill>
-                                    <p class="m-0">Weekend - Save Your Tears</p>
+                                    <p class="m-0">{{room.player.current_song}}</p>
                                 </div>
                             </div>
                         </div>

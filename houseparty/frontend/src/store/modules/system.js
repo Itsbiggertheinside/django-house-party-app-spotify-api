@@ -5,7 +5,8 @@ export default {
 
     state: {
 
-        system_information: { message: '', is_visible: false }
+        system_information: { message: '', is_visible: false },
+        componentKey: 0
 
     },
 
@@ -13,6 +14,10 @@ export default {
 
         setSystemInformation(state, payload) {
             state.system_information = payload
+        },
+
+        increaseComponentKey(state, payload) {
+            state.componentKey += payload
         }
 
     },
@@ -31,7 +36,8 @@ export default {
 
     getters: {
 
-        getSystemInformation: state => state.system_information
+        getSystemInformation: state => state.system_information,
+        getComponentKey: state => state.componentKey
         
     }
 

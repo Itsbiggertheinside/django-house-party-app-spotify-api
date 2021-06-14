@@ -41,7 +41,8 @@ export default {
         }
     },
     mounted() {
-        this.$cookies.remove('token')
+        this.$store.commit('increaseComponentKey', 1)
+        this.$cookies.remove('houseparty_token')
         this.$cookies.remove('username')
     }
 }
