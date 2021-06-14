@@ -5,7 +5,7 @@
       <b-col cols="12" class="d-flex justify-content-end align-items-center mb-4" id="nav">
         <navbar :key="componentKey"></navbar>
       </b-col>
-      <router-view :key="componentKey"/>
+      <router-view/>
     </b-container>
 
 

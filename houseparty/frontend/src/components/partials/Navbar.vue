@@ -32,6 +32,7 @@ export default {
         ...mapActions({refreshSpotifyToken: 'refreshSpotifyToken'}),
         handleRoute(link) {
             this.$router.push(link)
+            this.$store.commit('increaseComponentKey', 1)
         },
         async handleRoomCreateModal() {
             await this.refreshSpotifyToken()

@@ -16,7 +16,7 @@
 <script>
 import RoomList from '../components/home/RoomList.vue'
 import RoomFilter from '../components/home/RoomFilter.vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
@@ -26,14 +26,17 @@ export default {
   methods: {
     ...mapActions({closeSocket: 'closeSocket', setListener: 'setListener'})
   },
+  computed: {
+    ...mapGetters({componentKey: 'getComponentKey'})
+  },
   async mounted() {
+    this.$store.commit('increaseComponentKey', 1)
     try {
       const current_room_code = this.$store.getters.getCurrentRoom.code
       if (current_room_code) {
         await this.setListener({code: current_room_code, action_type: 'remove'})
         .then(async () => {
           await this.closeSocket()
-          this.$store.commit('increaseComponentKey', 1)
         })
       }
     } catch (e) {
