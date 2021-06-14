@@ -32,11 +32,12 @@ export default {
   async mounted() {
     this.$store.commit('increaseComponentKey', 1)
     try {
-      const current_room_code = this.$store.getters.getCurrentRoom.code
-      if (current_room_code) {
-        await this.setListener({code: current_room_code, action_type: 'remove'})
+      const current_room = this.$store.getters.getCurrentRoom
+      if (current_room) {
+        await this.setListener({code: current_room.code, action_type: 'remove'})
         .then(async () => {
           await this.closeSocket()
+          this.$store.commit('setCurrentRoom', null)
         })
       }
     } catch (e) {

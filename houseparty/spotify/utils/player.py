@@ -100,4 +100,4 @@ def execute_spotify_request(host_tokens, type, playlist_id=None, song_offset=Non
         return switch_request_type(type, host_tokens, headers, playlist_id, song_offset)
     else:
         update_token = update_profile_tokens(host_tokens)
-        switch_request_type(type, headers, playlist_id, song_offset) if update_token else None
+        return switch_request_type(type, headers, playlist_id, song_offset) if update_token else None
